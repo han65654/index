@@ -7,19 +7,34 @@
     <div>
         <textarea id="text-to-read" rows="4" cols="50"></textarea>
         <button onclick="speakText()">Convert</button>
+        <button onclick="stopSpeaking()">Stop</button>
     </div>
 
     <script>
+        var currentSpeech;
+
         function speakText() {
             var text = document.getElementById("text-to-read").value;
             
             // SpeechSynthesis API를 사용하여 TTS 기능 실행
             if ('speechSynthesis' in window) {
+                // 이전에 실행 중인 TTS 중지
+                stopSpeaking();
+
                 var speech = new SpeechSynthesisUtterance(text);
                 speech.lang = 'en-US'; // 영어로 설정
+                currentSpeech = speech; // 현재 TTS 할당
+
                 window.speechSynthesis.speak(speech);
             } else {
                 alert('죄송합니다. 브라우저가 SpeechSynthesis API를 지원하지 않습니다.');
+            }
+        }
+
+        function stopSpeaking() {
+            if (currentSpeech) {
+                window.speechSynthesis.cancel(); // 현재 TTS 중지
+                currentSpeech = null; // 현재 TTS 해제
             }
         }
     </script>
