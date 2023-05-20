@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TTS (Text to Speech)</title>
+</head>
+<body>
+    <div>
+        <textarea id="text-to-read" rows="4" cols="50"></textarea>
+        <button onclick="speakText()">Convert</button>
+    </div>
+
+    <script>
+        function speakText() {
+            var text = document.getElementById("text-to-read").value;
+            
+            // SpeechSynthesis API를 사용하여 TTS 기능 실행
+            if ('speechSynthesis' in window) {
+                var speech = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(speech);
+            } else {
+                alert('죄송합니다. 브라우저가 SpeechSynthesis API를 지원하지 않습니다.');
+            }
+        }
+    </script>
+</body>
+</html>
