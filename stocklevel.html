@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Calculation</title>
+  <script>
+    function calculateInventory() {
+      // Get user inputs
+      var avgMonthlyDemand = parseInt(document.getElementById("avgMonthlyDemand").value);
+      var supplyLeadTime = parseInt(document.getElementById("supplyLeadTime").value);
+      var serviceFactor = parseFloat(document.getElementById("serviceFactor").value);
+      var demandStandardDeviation = parseFloat(document.getElementById("stadarddeviation").value);
+
+      // Calculate average daily demand
+      var avgDailyDemand = avgMonthlyDemand / 30; // Assuming 30 days in a month
+
+      // Calculate cycle inventory
+      var cycleInventory = avgDailyDemand * supplyLeadTime;
+
+      // Calculate safety stock
+      var safetyStock = demandStandardDeviation * serviceFactor * Math.sqrt(supplyLeadTime);
+
+      // Display the results
+      document.getElementById("cycleInventory").innerHTML = cycleInventory.toFixed(2);
+      document.getElementById("safetyStock").innerHTML = safetyStock.toFixed(2);
+    }
+  </script>
+</head>
+<body>
+  <h1>Stock Calculation</h1>
+
+  <label for="avgMonthlyDemand">Average Monthly Demand Qty:</label>
+  <input type="number" id="avgMonthlyDemand"><br><br>
+
+  <label for="supplyLeadTime">Supply Lead Time (in days):</label>
+  <input type="number" id="supplyLeadTime"><br><br>
+
+  <label for="serviceFactor">Service Factor index:</label>
+  <input type="number" id="serviceFactor" value="1.28"><br>
+  <p class="text" style = " font-size:0.8em">* Service level: Desired service level expressed as a percentage</p>
+  <img src="Service_factor.png" width="250" height="250" ><br><br>
+  <label for="stadarddeviation">Stadard deviation:</label>
+  <input type="number" id="stadarddeviation" value="2"><br>
+  <img src="SD.jpg" width="100" height="100" ><br>
+  <a href="https://en.khanacademy.org/math/statistics-probability/summarizing-quantitative-data/variance-standard-deviation-population/a/calculating-standard-deviation-step-by-step" title="Calculator" target="_blank" >How to calculate </a><br><br>
+
+  <button onclick="calculateInventory()">Calculate</button><br><br>
+
+  <h2>Results:</h2>
+  <p>Cycle Stock : <span id="cycleInventory"></span></p>
+  <p>Safety Stock: <span id="safetyStock"></span></p>
+</body>
+</html>
