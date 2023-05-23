@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Calculation</title>
+  <style>
+    /* 디자인을 꾸며줄 CSS 코드를 작성합니다. */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    label {
+      font-weight: bold;
+    }
+    
+    input[type="number"] {
+      width: 100px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    p.text {
+      font-size: 0.8em;
+      color: #666;
+    }
+    
+    img {
+      display: block;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    h2 {
+      margin-top: 20px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+    }
+    
+    span {
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    // JavaScript 코드는 그대로 유지합니다.
+    function calculateInventory() {
+      // Get user inputs
+      var avgMonthlyDemand = parseInt(document.getElementById("avgMonthlyDemand").value);
+      var supplyLeadTime = parseInt(document.getElementById("supplyLeadTime").value);
+      var serviceFactor = parseFloat(document.getElementById("serviceFactor").value);
+      var demandStandardDeviation = parseFloat(document.getElementById("demanddeviation").value);
+      var leadtimeStandardDeviation = parseFloat(document.getElementById("leadtimedeviation").value);
+
+      // Calculate average daily demand
+      var avgDailyDemand = avgMonthlyDemand / 30; // Assuming 30 days in a month
+
+      // Calculate cycle inventory
+      var cycleInventory = avgDailyDemand * supplyLeadTime;
+
+      // Calculate safety stock
+      var safetyStock1 = avgDailyDemand * supplyLeadTime / 5;
+      var safetyStock2 = demandStandardDeviation * serviceFactor * Math.sqrt(supplyLeadTime/30);
+      var safetyStock3 = avgMonthlyDemand * leadtimeStandardDeviation * serviceFactor;
+      var safetyStock4 = serviceFactor * Math.sqrt(supplyLeadTime/30*demandStandardDeviation*demandStandardDeviation+avgMonthlyDemand*leadtimeStandardDeviation*leadtimeStandardDeviation) ;
+
+      // Display the results
+      document.getElementById("cycleInventory").innerHTML = cycleInventory.toFixed(2);
+      document.getElementById("safetyStock1").innerHTML = safetyStock1.toFixed(2);
+      document.getElementById("safetyStock2").innerHTML = safetyStock2.toFixed(2);
+      document.getElementById("safetyStock3").innerHTML = safetyStock3.toFixed(2);
+      document.getElementById("safetyStock4").innerHTML = safetyStock4.toFixed(2);
+    }
+  </script>
+</head>
+<body>
+  <h1>Stock Calculation</h1>
+
+  <label for="avgMonthlyDemand">Average Monthly Demand Qty:</label>
+  <input type="number" id="avgMonthlyDemand"><br><br>
+
+  <label for="supplyLeadTime">Average Lead Time (in days):</label>
+  <input type="number" id="supplyLeadTime"><br><br>
+
+  <label for="serviceFactor">Service Factor index:</label>
+  <input type="number" id="serviceFactor" value="1.28"><br>
+  <p class="text">* Service level: The expected probability of not hitting a stock-out during the next replenishment cycle or the probability of not losing sales</p>
+  <img src="Service_factor.png" width="250" height="250" ><br><br>
+  <label for="demanddeviation">Monthly demand deviation:</label>
+  <input type="number" id="demanddeviation" ><br><br>
+  <label for="leadtimedeviation">Monthly leadtime deviation:</label>
+  <input type="number" id="leadtimedeviation" ><br>
+  <img src="SD.jpg" width="100" height="100" ><br>
+  <a href="https://en.khanacademy.org/math/statistics-probability/summarizing-quantitative-data/variance-standard-deviation-population/a/calculating-standard-deviation-step-by-step" title="Calculator" target="_blank" >How to calculate </a><br><br>
+
+  <button onclick="calculateInventory()">Calculate</button><br><br>
+
+  <h2>Results:</h2>
+  <p>Cycle Stock : <span id="cycleInventory"></span></p>
+  <p>Safety Stock1 (most basic method // Safety date: Supplyleadtime x 1/5) : <span id="safetyStock1"></span></p>  
+  <p>Safety Stock2 (In case of uncertainty about the demand) : <span id="safetyStock2"></span></p>
+  <p>Safety Stock3 (In case of uncertainty about the leadtime) : <span id="safetyStock3"></span></p>
+  <p>Safety Stock4 (In case of uncertainty about lead time and demand) : <span id="safetyStock4"></span></p>
+</body>
+</html>
