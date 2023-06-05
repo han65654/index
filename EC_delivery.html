@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Check-list in case of delivery to other EU country</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    .question {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .question-text {
+      font-weight: bold;
+    }
+    
+    .choices {
+      margin-top: 10px;
+    }
+    
+    .choice {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    .result {
+      font-weight: bold;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    button[type="submit"] {
+    display: block;
+    margin: 0 auto;
+    width: 100px; /* 버튼의 가로 크기 */
+    padding: 10px;
+  }
+  #link {
+  text-align: center;
+}
+
+  </style>
+</head>
+<body>
+  <h1> EC delivery Check-list (Umsatzsteuerfreie innergemeinschaftliche Lieferung)</h1>
+  
+  <form id="question-1">
+    <div class="question">
+      <div class="question-text">1. Will the goods be dispatched and or transported to another Member state (EU country)?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q1" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q1" value="F"> No
+        </label>
+      </div>
+    </div>
+    
+    <div class="question" id="question-2" style="display: none;">
+      <div class="question-text">2. Is this customer a company ? Does receipent have a VAT identification number of EU destination country ?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q2" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q2" value="F"> No
+        </label>
+      </div>
+    </div>
+
+    <div class="question" id="question-2-0" style="display: none;">
+      <div class="question-text">2-0. Is the delivery regarding the supply of a new vehicle to private person ?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q2-0" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q2-0" value="F"> No
+        </label>
+      </div>
+    </div>
+
+    <div class="question" id="question-2-1" style="display: none;">
+      <div class="question-text">2-1. Is the country prefix of the reciepent's VAT ID number different from supplier's ?</div>
+      <p> [ex] country prefix = "FR" of VAT ID number '<span style="color: red">FR</span>12345678'</p>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q2-1" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q2-1" value="F"> No
+        </label>
+      </div>
+    </div>
+
+    <div class="question" id="question-2-2" style="display: none;">
+      <div class="question-text">2-2. Are the validation of VAT ID number, Name and address verified in VIES ?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q2-2" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q2-2" value="F"> No
+        </label>
+      </div>
+    </div>
+    <p id="link" style="display: none"> <a href ="https://ec.europa.eu/taxation_customs/vies/#/vat-validation" target="_blank"> Verify now !</a> </p>
+    
+    <div class="question" id="question-3" style="display: none;">
+      <div class="question-text">3. Does receipent purchase the goods for himself (incl. goods for sale ) ?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q3" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q3" value="F"> No
+        </label>
+      </div>
+    </div>
+
+    <div class="question" id="question-4" style="display: none;">
+      <div class="question-text">4. Is the acquisition of the item subject to VAT of the customer's EU country ?
+      </div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q4" value="T"> Yes
+        </label>
+        <label class="choice">
+          <input type="radio" name="q4" value="F"> No
+        </label>
+      </div>
+    </div>
+
+    <div class="question" id="question-5" style="display: none;">
+      <div class="question-text">5. How many parties(supplier and Buyer) are involved here ?</div>
+      <div class="choices">
+        <label class="choice">
+          <input type="radio" name="q5" value="2"> 2 (just one supplier and one Buyer)
+        </label>
+        <label class="choice">
+          <input type="radio" name="q5" value="3"> 3 or More 
+        </label>
+      </div>
+    </div>
+    
+    <button type="submit" >Next</button>
+  </form>
+  
+  <div class="result" id="result" style="display: none;"></div>
+  
+  <script src="popup.js"></script>
+
+  <script>
+    const form = document.getElementById('question-1');
+    const resultDiv = document.getElementById('result');
+    const question2 = document.getElementById('question-2');
+    const question2_0 = document.getElementById('question-2-0');
+    const question2_1 = document.getElementById('question-2-1');
+    const question2_2 = document.getElementById('question-2-2');
+    const question3 = document.getElementById('question-3');
+    const question4 = document.getElementById('question-4');
+    const question5 = document.getElementById('question-5');
+    const link = document.getElementById('link');
+    
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // 사용자가 선택한 답변 가져오기
+      const answers = {
+        q1: document.querySelector('input[name="q1"]:checked').value,
+        q2: document.querySelector('input[name="q2"]:checked') ? document.querySelector('input[name="q2"]:checked').value : null,
+        q2_0: document.querySelector('input[name="q2-0"]:checked') ? document.querySelector('input[name="q2-0"]:checked').value : null,
+        q2_1: document.querySelector('input[name="q2-1"]:checked') ? document.querySelector('input[name="q2-1"]:checked').value : null,
+        q2_2: document.querySelector('input[name="q2-2"]:checked') ? document.querySelector('input[name="q2-2"]:checked').value : null,
+        q3: document.querySelector('input[name="q3"]:checked') ? document.querySelector('input[name="q3"]:checked').value : null,
+        q4: document.querySelector('input[name="q4"]:checked') ? document.querySelector('input[name="q4"]:checked').value : null,
+        q5: document.querySelector('input[name="q5"]:checked') ? document.querySelector('input[name="q5"]:checked').value : null
+      };
+      
+      // 다음 문제로 이동
+      if (answers.q1 === 'T') {
+        question2.style.display = 'block';
+      } else if (answers.q1 === 'F') {
+        alert('This delivery does not meet the conditions for intra-Community supply');
+      }
+
+      if (answers.q2 === 'T') {
+        question2_1.style.display = 'block';
+      } else if (answers.q2 === 'F') {
+        question2_0.style.display = 'block';
+      }
+
+      if (answers.q2_0 === 'T') {
+        question5.style.display = 'block';
+      } else if (answers.q2_0 === 'F') {
+        alert('This delivery does not meet the conditions for intra-Community supply');
+      }
+
+      if (answers.q2_1 === 'T') {
+        question2_2.style.display = 'block';
+      } else if (answers.q2_1 === 'F') {
+        alert('This delivery does not meet the conditions for intra-Community supply');
+      }
+
+      if (answers.q2_2 === 'T') {
+        question3.style.display = 'block';
+      } else if (answers.q2_2 === 'F') {
+        link.style.display = 'block';
+      }
+
+      if (answers.q3 === 'T') {
+        question4.style.display = 'block';
+      } else if (answers.q3 === 'F') {
+        alert('This delivery does not meet the conditions for intra-Community supply');
+      }
+
+      if (answers.q4 === 'T') {
+        question5.style.display = 'block';
+      } else if (answers.q4 === 'F') {
+        alert('This delivery does not meet the conditions for intra-Community supply');
+      }
+
+      if (answers.q5 === '2') {
+        Popup()
+      } else if (answers.q5 === '3') {
+        window.open('https://reihengeschaeftrechner.de/start.php#start', '_blank');
+      }
+
+      // 결과 계산
+      if (answers.qA !== null) {
+        let result = '';
+        if (answers.qA === 'A1') {
+          result = '당신은 음악을 즐기는 성격입니다.';
+        } else if (answers.qA === 'A2') {
+          result = '당신은 독서를 즐기는 성격입니다.';
+        }
+        
+        // 결과 표시
+        resultDiv.textContent = result;
+        resultDiv.style.display = 'block';
+      } else if (answers.qB !== null) {
+        let result = '';
+        if (answers.qB === 'B1') {
+          result = '당신은 조깅을 좋아하는 성격입니다.';
+        } else if (answers.qB === 'B2') {
+          result = '당신은 요가를 좋아하는 성격입니다.';
+        }
+        
+        // 결과 표시
+        resultDiv.textContent = result;
+        resultDiv.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
