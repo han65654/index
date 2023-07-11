@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Project board</title>
+  <link rel="stylesheet" type="text/css" href="pb.css">
+</head>
+<body>
+  <h1>Project board</h1>
+
+  <form id="projectForm">
+    <input type="text" id="name" placeholder="name of project" required>
+    <input type="date" id="date" required>
+    <button type="submit">Add new project</button>
+  </form>
+
+  <div id="board">
+    <div id="todo" class="column">
+      <h3>Upcoming projects</h3>
+      <div id="projectList" class="project-list"></div>
+    </div>
+    <div id="inProgress" class="column">
+      <h3>In Progress</h3>
+    </div>
+    <div id="done" class="column">
+      <h3>Completed</h3>
+    </div>
+  </div>
+
+  <p class="drag-drop-info">Drag &amp; Drop to Move Tasks</p>
+
+  <script src="pb.js"></script>
+</body>
+</html>

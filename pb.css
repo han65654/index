@@ -1,0 +1,108 @@
+/* 전체 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f6f6f6;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 50px; /* 변경된 부분 */
+    margin: 40px 0; /* 변경된 부분 */
+  }
+  
+  #board {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .column {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .column h3 {
+    text-align: center;
+    margin: 0 0 10px;
+  }
+  
+  .project-list {
+    min-height: 100px;
+  }
+  
+  .project {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: move;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+  }
+  
+  .project input {
+    display: block;
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  
+  .project-name {
+    font-weight: bold;
+  }
+  
+  .project-date {
+    color: #666;
+    font-size: 0.9em;
+  }
+  
+  .project:hover {
+    opacity: 0.8;
+  }
+  
+  .column.hovered {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .column.dragging-over {
+    border: 2px dashed #aaa;
+  }
+
+  #projectForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  #projectForm input[type="text"],
+  #projectForm input[type="date"],
+  #projectForm button[type="submit"] {
+    margin: 0 5px;
+  }
+
+  .drag-drop-info {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* 반응형 스타일 */
+  @media screen and (max-width: 600px) {
+    #board {
+      flex-wrap: wrap;
+    }
+    .column {
+      flex-basis: 100%;
+      max-width: 100%;
+      margin: 10px 0;
+    }
+  }
+  
